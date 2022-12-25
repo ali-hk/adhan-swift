@@ -34,4 +34,5 @@ public enum Prayer: CaseIterable {
     case sunset
     case maghrib
     case isha
+    case midnight
 }

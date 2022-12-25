@@ -67,6 +67,10 @@
 		088088B32026F0B30059C738 /* MathUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088B12026F0B30059C738 /* MathUtilities.swift */; };
 		088088B42026F0B30059C738 /* MathUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088B12026F0B30059C738 /* MathUtilities.swift */; };
 		088088B52026F0B30059C738 /* MathUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088088B12026F0B30059C738 /* MathUtilities.swift */; };
+		623304A7295812A0004D03C0 /* MidnightRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623304A6295812A0004D03C0 /* MidnightRule.swift */; };
+		623304A8295812A0004D03C0 /* MidnightRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623304A6295812A0004D03C0 /* MidnightRule.swift */; };
+		623304A9295812A0004D03C0 /* MidnightRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623304A6295812A0004D03C0 /* MidnightRule.swift */; };
+		623304AA295812A0004D03C0 /* MidnightRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623304A6295812A0004D03C0 /* MidnightRule.swift */; };
 		84369EA01CD03D8700C34812 /* AdhanObjc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84369E9F1CD03D8700C34812 /* AdhanObjc.swift */; };
 		84482DBB1EA70A160074E53C /* QiblaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84482DBA1EA70A160074E53C /* QiblaTests.swift */; };
 		844EFDEB214A001E00186C45 /* Angle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844EFDEA214A001E00186C45 /* Angle.swift */; };
@@ -160,6 +164,7 @@
 		0880888E2026EF910059C738 /* Astronomical.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Astronomical.swift; sourceTree = "<group>"; };
 		088088A22026F0390059C738 /* DateUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateUtilities.swift; sourceTree = "<group>"; };
 		088088B12026F0B30059C738 /* MathUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathUtilities.swift; sourceTree = "<group>"; };
+		623304A6295812A0004D03C0 /* MidnightRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidnightRule.swift; sourceTree = "<group>"; };
 		84369E9F1CD03D8700C34812 /* AdhanObjc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdhanObjc.swift; sourceTree = "<group>"; };
 		84482DBA1EA70A160074E53C /* QiblaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QiblaTests.swift; sourceTree = "<group>"; };
 		844EFDEA214A001E00186C45 /* Angle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Angle.swift; sourceTree = "<group>"; };
@@ -255,6 +260,7 @@
 				088088652026EDF90059C738 /* PrayerAdjustment.swift */,
 				84B2C70C256CB1E70097C96C /* Rouding.swift */,
 				84D70F6F2778231400B3027D /* Shafaq.swift */,
+				623304A6295812A0004D03C0 /* MidnightRule.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -646,6 +652,7 @@
 				083EFC61202815EE003F6218 /* Prayer.swift in Sources */,
 				84B2C70D256CB1E70097C96C /* Rouding.swift in Sources */,
 				083EFC55202815EE003F6218 /* CalculationMethod.swift in Sources */,
+				623304A7295812A0004D03C0 /* MidnightRule.swift in Sources */,
 				083EFC5D202815EE003F6218 /* Madhab.swift in Sources */,
 				083EFC65202815EE003F6218 /* Coordinates.swift in Sources */,
 				083EFC59202815EE003F6218 /* HighLatitudeRule.swift in Sources */,
@@ -687,6 +694,7 @@
 				083EFC62202815EE003F6218 /* Prayer.swift in Sources */,
 				84B2C70E256CB1E70097C96C /* Rouding.swift in Sources */,
 				083EFC56202815EE003F6218 /* CalculationMethod.swift in Sources */,
+				623304A8295812A0004D03C0 /* MidnightRule.swift in Sources */,
 				083EFC5E202815EE003F6218 /* Madhab.swift in Sources */,
 				845DA5C1214BDCA6001AF870 /* Angle.swift in Sources */,
 				845DA5C4214BDCAE001AF870 /* Minute.swift in Sources */,
@@ -714,6 +722,7 @@
 				083EFC63202815EE003F6218 /* Prayer.swift in Sources */,
 				84B2C70F256CB1E70097C96C /* Rouding.swift in Sources */,
 				083EFC57202815EE003F6218 /* CalculationMethod.swift in Sources */,
+				623304A9295812A0004D03C0 /* MidnightRule.swift in Sources */,
 				083EFC5F202815EE003F6218 /* Madhab.swift in Sources */,
 				845DA5C2214BDCA7001AF870 /* Angle.swift in Sources */,
 				845DA5C5214BDCAF001AF870 /* Minute.swift in Sources */,
@@ -741,6 +750,7 @@
 				083EFC64202815EE003F6218 /* Prayer.swift in Sources */,
 				84B2C710256CB1E70097C96C /* Rouding.swift in Sources */,
 				083EFC58202815EE003F6218 /* CalculationMethod.swift in Sources */,
+				623304AA295812A0004D03C0 /* MidnightRule.swift in Sources */,
 				083EFC60202815EE003F6218 /* Madhab.swift in Sources */,
 				845DA5C3214BDCA8001AF870 /* Angle.swift in Sources */,
 				845DA5C6214BDCAF001AF870 /* Minute.swift in Sources */,

@@ -39,6 +39,7 @@
     XCTAssertEqualObjects([formatter stringFromDate:p.sunset], @"8:32 PM");
     XCTAssertEqualObjects([formatter stringFromDate:p.maghrib], @"8:32 PM");
     XCTAssertEqualObjects([formatter stringFromDate:p.isha], @"9:57 PM");
+    XCTAssertEqualObjects([formatter stringFromDate:p.midnight], @"1:20 AM");
 }
 
 - (void)testShafaqInterface {
@@ -94,7 +95,8 @@
     XCTAssertEqualObjects([formatter stringFromDate:p1.sunset], @"8:32 PM");
     XCTAssertEqualObjects([formatter stringFromDate:p1.maghrib], @"8:32 PM");
     XCTAssertEqualObjects([formatter stringFromDate:p1.isha], @"9:57 PM");
-    
+    XCTAssertEqualObjects([formatter stringFromDate:p1.midnight], @"1:20 AM");
+
     params.rounding = BARoundingUp;
     
     BAPrayerTimes *p2 = [[BAPrayerTimes alloc] initWithCoordinates:[[BACoordinates alloc] initWithLatitude:35.7750 longitude:-78.6389] date:date calculationParameters:params];
@@ -107,6 +109,7 @@
     XCTAssertEqualObjects([formatter stringFromDate:p2.sunset], @"8:33 PM");
     XCTAssertEqualObjects([formatter stringFromDate:p2.maghrib], @"8:33 PM");
     XCTAssertEqualObjects([formatter stringFromDate:p2.isha], @"9:58 PM");
+    XCTAssertEqualObjects([formatter stringFromDate:p2.midnight], @"1:21 AM");
     
     params.rounding = BARoundingNone;
     
@@ -120,6 +123,7 @@
     XCTAssertEqualObjects([formatter stringFromDate:p3.sunset], @"8:32 PM");
     XCTAssertEqualObjects([formatter stringFromDate:p3.maghrib], @"8:32 PM");
     XCTAssertEqualObjects([formatter stringFromDate:p3.isha], @"9:57 PM");
+    XCTAssertEqualObjects([formatter stringFromDate:p3.midnight], @"1:20 AM");
 }
 
 - (void)testTimeForPrayer {
@@ -140,6 +144,7 @@
     XCTAssertEqualObjects(p.sunset, [p timeForPrayer:BAPrayerSunset]);
     XCTAssertEqualObjects(p.maghrib, [p timeForPrayer:BAPrayerMaghrib]);
     XCTAssertEqualObjects(p.isha, [p timeForPrayer:BAPrayerIsha]);
+    XCTAssertEqualObjects(p.midnight, [p timeForPrayer:BAPrayerMidnight]);
     XCTAssertNil([p timeForPrayer:BAPrayerNone]);
 }
 
@@ -162,6 +167,7 @@
     XCTAssertEqual([p currentPrayer:[p.sunset dateByAddingTimeInterval:1]], BAPrayerMaghrib);
     XCTAssertEqual([p currentPrayer:[p.maghrib dateByAddingTimeInterval:1]], BAPrayerMaghrib);
     XCTAssertEqual([p currentPrayer:[p.isha dateByAddingTimeInterval:1]], BAPrayerIsha);
+    XCTAssertEqual([p currentPrayer:[p.midnight dateByAddingTimeInterval:1]], BAPrayerMidnight);
 }
 
 - (void)testCurrentPrayer_sunsetBeforeMaghrib_currentReturnsSunset {
@@ -183,6 +189,7 @@
     XCTAssertEqual([p currentPrayer:[p.sunset dateByAddingTimeInterval:1]], BAPrayerSunset);
     XCTAssertEqual([p currentPrayer:[p.maghrib dateByAddingTimeInterval:1]], BAPrayerMaghrib);
     XCTAssertEqual([p currentPrayer:[p.isha dateByAddingTimeInterval:1]], BAPrayerIsha);
+    XCTAssertEqual([p currentPrayer:[p.midnight dateByAddingTimeInterval:1]], BAPrayerMidnight);
 }
 
 - (void)testNextPrayer_sunsetSameAsMaghrib_nextReturnsIsha {
@@ -204,7 +211,8 @@
     XCTAssertEqual([p nextPrayer:[p.asr dateByAddingTimeInterval:1]], BAPrayerMaghrib);
     XCTAssertEqual([p nextPrayer:[p.sunset dateByAddingTimeInterval:1]], BAPrayerIsha);
     XCTAssertEqual([p nextPrayer:[p.maghrib dateByAddingTimeInterval:1]], BAPrayerIsha);
-    XCTAssertEqual([p nextPrayer:[p.isha dateByAddingTimeInterval:1]], BAPrayerNone);
+    XCTAssertEqual([p nextPrayer:[p.isha dateByAddingTimeInterval:1]], BAPrayerMidnight);
+    XCTAssertEqual([p nextPrayer:[p.midnight dateByAddingTimeInterval:1]], BAPrayerNone);
 }
 
 - (void)testNextPrayer_sunsetBeforeMaghrib_nextReturnsMaghrib {
@@ -226,7 +234,8 @@
     XCTAssertEqual([p nextPrayer:[p.asr dateByAddingTimeInterval:1]], BAPrayerSunset);
     XCTAssertEqual([p nextPrayer:[p.sunset dateByAddingTimeInterval:1]], BAPrayerMaghrib);
     XCTAssertEqual([p nextPrayer:[p.maghrib dateByAddingTimeInterval:1]], BAPrayerIsha);
-    XCTAssertEqual([p nextPrayer:[p.isha dateByAddingTimeInterval:1]], BAPrayerNone);
+    XCTAssertEqual([p nextPrayer:[p.isha dateByAddingTimeInterval:1]], BAPrayerMidnight);
+    XCTAssertEqual([p nextPrayer:[p.midnight dateByAddingTimeInterval:1]], BAPrayerNone);
 }
 
 - (void)testQibla {
@@ -251,6 +260,7 @@
     XCTAssertNil(p.sunset);
     XCTAssertNil(p.maghrib);
     XCTAssertNil(p.isha);
+    XCTAssertNil(p.midnight);
 }
 
 - (BACalculationParameters *)parseParams:(NSDictionary *)dict {
@@ -305,7 +315,15 @@
     } else {
         params.highLatitudeRule = BAHighLatitudeRuleMiddleOfTheNight;
     }
-    
+
+    NSString *midnightRule = dict[@"midnightRule"];
+
+    if ([midnightRule isEqualToString:@"Standard"]) {
+        params.midnightRule = BAMidnightRuleStandard;
+    } else if ([midnightRule isEqualToString:@"Jafari"]) {
+        params.midnightRule = BAMidnightRuleJafari;
+    }
+
     return params;
 }
 
@@ -353,6 +371,7 @@
             NSString *sunsetString = [NSString stringWithFormat:@"%@ %@", time[@"date"], time[@"sunset"]];
             NSString *maghribString = [NSString stringWithFormat:@"%@ %@", time[@"date"], time[@"maghrib"]];
             NSString *ishaString = [NSString stringWithFormat:@"%@ %@", time[@"date"], time[@"isha"]];
+            NSString *midnightString = [NSString stringWithFormat:@"%@ %@", time[@"date"], time[@"midnight"]];
             XCTAssertLessThanOrEqual(fabs([prayerTimes.imsak timeIntervalSinceDate:[dateTimeFormatter dateFromString:imsakString]]) / 60, variance);
             XCTAssertLessThanOrEqual(fabs([prayerTimes.fajr timeIntervalSinceDate:[dateTimeFormatter dateFromString:fajrString]]) / 60, variance);
             XCTAssertLessThanOrEqual(fabs([prayerTimes.sunrise timeIntervalSinceDate:[dateTimeFormatter dateFromString:sunriseString]]) / 60, variance);
@@ -361,6 +380,7 @@
             XCTAssertLessThanOrEqual(fabs([prayerTimes.sunset timeIntervalSinceDate:[dateTimeFormatter dateFromString:sunsetString]]) / 60, variance);
             XCTAssertLessThanOrEqual(fabs([prayerTimes.maghrib timeIntervalSinceDate:[dateTimeFormatter dateFromString:maghribString]]) / 60, variance);
             XCTAssertLessThanOrEqual(fabs([prayerTimes.isha timeIntervalSinceDate:[dateTimeFormatter dateFromString:ishaString]]) / 60, variance);
+            XCTAssertLessThanOrEqual(fabs([prayerTimes.midnight timeIntervalSinceDate:[dateTimeFormatter dateFromString:midnightString]]) / 60, variance);
         }
     }
 }

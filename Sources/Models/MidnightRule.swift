@@ -1,5 +1,5 @@
 //
-//  PrayerAdjustment.swift
+//  MidnightMethod.swift
 //  Adhan
 //
 //  Copyright © 2018 Batoul Apps. All rights reserved.
@@ -25,27 +25,20 @@
 
 import Foundation
 
-/* Adjustment value for prayer times, in minutes */
-public struct PrayerAdjustments: Codable, Equatable {
-    public var imsak: Minute
-    public var fajr: Minute
-    public var sunrise: Minute
-    public var dhuhr: Minute
-    public var asr: Minute
-    public var sunset: Minute
-    public var maghrib: Minute
-    public var isha: Minute
-    public var midnight: Minute
+/**
+  Rule for determining duration for calculating midnight
 
-    public init(imsak: Minute = 0, fajr: Minute = 0, sunrise: Minute = 0, dhuhr: Minute = 0, asr: Minute = 0, sunset: Minute = 0, maghrib: Minute = 0, isha: Minute = 0, midnight: Minute = 0) {
-        self.imsak = imsak
-        self.fajr = fajr
-        self.sunrise = sunrise
-        self.dhuhr = dhuhr
-        self.asr = asr
-        self.sunset = sunset
-        self.maghrib = maghrib
-        self.isha = isha
-        self.midnight = midnight
-    }
+  *Values*
+
+  **standard**
+
+  Midnight is calculated as the mean time from Sunset to Sunrise
+
+  **jafari**
+
+  Midnight is calculated as the mean time from Sunset to Fajr
+ */
+public enum MidnightRule: String, Codable, CaseIterable {
+    case standard
+    case jafari
 }

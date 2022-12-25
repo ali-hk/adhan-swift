@@ -35,6 +35,7 @@ import Foundation
     case maghrib = 4
     case isha = 5
     case none = 6
+    case midnight = 8
 }
 
 @objcMembers open class BAPrayerTimes: NSObject {
@@ -46,6 +47,7 @@ import Foundation
     open var sunset: Date?
     open var maghrib: Date?
     open var isha: Date?
+    open var midnight: Date?
     
     private let prayerTimes: PrayerTimes?
     
@@ -60,6 +62,7 @@ import Foundation
             self.sunset = prayerTimes.sunset as Date
             self.maghrib = prayerTimes.maghrib as Date
             self.isha = prayerTimes.isha as Date
+            self.midnight = prayerTimes.midnight as Date
         }
         super.init()
     }
@@ -109,6 +112,8 @@ import Foundation
             return Prayer.maghrib
         case BAPrayer.isha:
             return Prayer.isha
+        case BAPrayer.midnight:
+            return Prayer.midnight
         }
     }
     
@@ -133,6 +138,8 @@ import Foundation
             return BAPrayer.maghrib
         case Prayer.isha:
             return BAPrayer.isha
+        case Prayer.midnight:
+            return BAPrayer.midnight
         }
     }
 }
@@ -145,6 +152,7 @@ import Foundation
     open var ishaInterval: Int = 0
     open var madhab: BAMadhab = .shafi
     open var highLatitudeRule: BAHighLatitudeRule = .middleOfTheNight
+    open var midnightRule: BAMidnightRule = .standard
     open var adjustments: BAPrayerAdjustments = BAPrayerAdjustments()
     open var shafaq: BAShafaq = .general
     open var rounding: BARounding = .nearest
@@ -196,6 +204,13 @@ import Foundation
             params.highLatitudeRule = HighLatitudeRule.seventhOfTheNight
         case BAHighLatitudeRule.twilightAngle:
             params.highLatitudeRule = HighLatitudeRule.twilightAngle
+        }
+
+        switch self.midnightRule {
+        case BAMidnightRule.standard:
+            params.midnightRule = MidnightRule.standard
+        case BAMidnightRule.jafari:
+            params.midnightRule = MidnightRule.jafari
         }
         
         switch self.shafaq {
@@ -293,6 +308,11 @@ import Foundation
     case twilightAngle
 }
 
+@objc public enum BAMidnightRule: Int {
+    case standard
+    case jafari
+}
+
 @objcMembers open class BAPrayerAdjustments: NSObject {
     open var imsak: Int = 0
     open var fajr: Int = 0
@@ -302,8 +322,9 @@ import Foundation
     open var sunset: Int = 0
     open var maghrib: Int = 0
     open var isha: Int = 0
+    open var midnight: Int = 0
     
-    public init(imsak: Int = 0, fajr: Int = 0, sunrise: Int = 0, dhuhr: Int = 0, asr: Int = 0, sunset: Int = 0, maghrib: Int = 0, isha: Int = 0) {
+    public init(imsak: Int = 0, fajr: Int = 0, sunrise: Int = 0, dhuhr: Int = 0, asr: Int = 0, sunset: Int = 0, maghrib: Int = 0, isha: Int = 0, midnight: Int = 0) {
         self.imsak = imsak
         self.fajr = fajr
         self.sunrise = sunrise
@@ -312,11 +333,12 @@ import Foundation
         self.sunset = sunset
         self.maghrib = maghrib
         self.isha = isha
+        self.midnight = midnight
         super.init()
     }
     
     internal func prayerAdjustments() -> PrayerAdjustments {
-        return PrayerAdjustments(imsak: self.imsak, fajr: self.fajr, sunrise: self.sunrise, dhuhr: self.dhuhr, asr: self.asr, sunset: self.sunset, maghrib: self.maghrib, isha: self.isha)
+        return PrayerAdjustments(imsak: self.imsak, fajr: self.fajr, sunrise: self.sunrise, dhuhr: self.dhuhr, asr: self.asr, sunset: self.sunset, maghrib: self.maghrib, isha: self.isha, midnight: self.midnight)
     }
 }
 

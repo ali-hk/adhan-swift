@@ -148,6 +148,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunset), "8:32 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "8:32 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "9:57 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.midnight), "1:20 AM")
     }
     
     func testOffsets() {
@@ -173,6 +174,7 @@ class AdhanTests: XCTestCase {
             XCTAssertEqual(dateFormatter.string(from: p.sunset), "5:01 PM")
             XCTAssertEqual(dateFormatter.string(from: p.maghrib), "5:01 PM")
             XCTAssertEqual(dateFormatter.string(from: p.isha), "6:26 PM")
+            XCTAssertEqual(dateFormatter.string(from: p.midnight), "12:04 AM")
         } else {
             XCTAssert(false)
         }
@@ -185,6 +187,7 @@ class AdhanTests: XCTestCase {
         params.adjustments.sunset = 5
         params.adjustments.maghrib = 10
         params.adjustments.isha = 10
+        params.adjustments.midnight = 10
         if let p2 = PrayerTimes(coordinates: Coordinates(latitude: 35.7750, longitude: -78.6336), date: comps, calculationParameters: params) {
             XCTAssertEqual(dateFormatter.string(from: p2.imsak), "5:35 AM")
             XCTAssertEqual(dateFormatter.string(from: p2.fajr), "5:45 AM")
@@ -194,6 +197,7 @@ class AdhanTests: XCTestCase {
             XCTAssertEqual(dateFormatter.string(from: p2.sunset), "5:06 PM")
             XCTAssertEqual(dateFormatter.string(from: p2.maghrib), "5:11 PM")
             XCTAssertEqual(dateFormatter.string(from: p2.isha), "6:36 PM")
+            XCTAssertEqual(dateFormatter.string(from: p2.midnight), "12:14 AM")
         } else {
             XCTAssert(false)
         }
@@ -208,6 +212,7 @@ class AdhanTests: XCTestCase {
             XCTAssertEqual(dateFormatter.string(from: p3.sunset), "5:01 PM")
             XCTAssertEqual(dateFormatter.string(from: p3.maghrib), "5:01 PM")
             XCTAssertEqual(dateFormatter.string(from: p3.isha), "6:26 PM")
+            XCTAssertEqual(dateFormatter.string(from: p3.midnight), "12:04 AM")
         } else {
             XCTAssert(false)
         }
@@ -234,6 +239,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunset), "5:40 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "5:43 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "7:05 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.midnight), "12:28 AM")
     }
     
     func testMoonsightingMethodHighLat() {
@@ -259,6 +265,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunset), "3:22 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "3:25 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "5:02 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.midnight), "12:20 AM")
     }
     
     func testTehranMethod() {
@@ -282,7 +289,8 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunset), "4:52 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "5:13 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "6:03 PM")
-        
+        XCTAssertEqual(dateFormatter.string(from: p.midnight), "12:00 AM")
+
         var comps2 = DateComponents()
         comps2.year = 2019
         comps2.month = 6
@@ -297,6 +305,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunset), "4:52 PM")
         XCTAssertEqual(dateFormatter.string(from: p2.maghrib), "8:43 PM")
         XCTAssertEqual(dateFormatter.string(from: p2.isha), "9:43 PM")
+        XCTAssertEqual(dateFormatter.string(from: p2.midnight), "1:05 AM")
     }
 
     func testDiyanet() {
@@ -325,6 +334,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p1.sunset), "7:45 PM")
         XCTAssertEqual(dateFormatter.string(from: p1.maghrib), "7:52 PM")
         XCTAssertEqual(dateFormatter.string(from: p1.isha), "9:19 PM") // original time 9:18 PM
+        XCTAssertEqual(dateFormatter.string(from: p1.midnight), "1:03 AM")
     }
 
     func testEgyptian() {
@@ -352,6 +362,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p1.sunset), "5:06 PM")
         XCTAssertEqual(dateFormatter.string(from: p1.maghrib), "5:06 PM")
         XCTAssertEqual(dateFormatter.string(from: p1.isha), "6:29 PM")
+        XCTAssertEqual(dateFormatter.string(from: p1.midnight), "11:58 PM")
     }
     
     func testTimeForPrayer() {
@@ -371,6 +382,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p.sunset, p.time(for: .sunset))
         XCTAssertEqual(p.maghrib, p.time(for: .maghrib))
         XCTAssertEqual(p.isha, p.time(for: .isha))
+        XCTAssertEqual(p.midnight, p.time(for: .midnight))
     }
     
     func testCurrentPrayer_sunsetSameAsMaghrib_currentReturnsMaghrib() {
@@ -392,6 +404,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p.currentPrayer(at: p.sunset.addingTimeInterval(1)), Prayer.maghrib)
         XCTAssertEqual(p.currentPrayer(at: p.maghrib.addingTimeInterval(1)), Prayer.maghrib)
         XCTAssertEqual(p.currentPrayer(at: p.isha.addingTimeInterval(1)), Prayer.isha)
+        XCTAssertEqual(p.currentPrayer(at: p.midnight.addingTimeInterval(1)), Prayer.midnight)
     }
 
     func testCurrentPrayer_sunsetBeforeMaghrib_currentReturnsSunset() {
@@ -413,6 +426,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p.currentPrayer(at: p.sunset.addingTimeInterval(1)), Prayer.sunset)
         XCTAssertEqual(p.currentPrayer(at: p.maghrib.addingTimeInterval(1)), Prayer.maghrib)
         XCTAssertEqual(p.currentPrayer(at: p.isha.addingTimeInterval(1)), Prayer.isha)
+        XCTAssertEqual(p.currentPrayer(at: p.midnight.addingTimeInterval(1)), Prayer.midnight)
     }
     
     func testNextPrayer_sunsetSameAsMaghrib_nextReturnsIsha() {
@@ -434,7 +448,8 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p.nextPrayer(at: p.asr.addingTimeInterval(1)), Prayer.maghrib)
         XCTAssertEqual(p.nextPrayer(at: p.sunset.addingTimeInterval(1)), Prayer.isha)
         XCTAssertEqual(p.nextPrayer(at: p.maghrib.addingTimeInterval(1)), Prayer.isha)
-        XCTAssertNil(p.nextPrayer(at: p.isha.addingTimeInterval(1)))
+        XCTAssertEqual(p.nextPrayer(at: p.isha.addingTimeInterval(1)), Prayer.midnight)
+        XCTAssertNil(p.nextPrayer(at: p.midnight.addingTimeInterval(1)))
     }
 
     func testNextPrayer_sunsetBeforeMaghrib_nextReturnsMaghrib() {
@@ -456,7 +471,8 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p.nextPrayer(at: p.asr.addingTimeInterval(1)), Prayer.sunset)
         XCTAssertEqual(p.nextPrayer(at: p.sunset.addingTimeInterval(1)), Prayer.maghrib)
         XCTAssertEqual(p.nextPrayer(at: p.maghrib.addingTimeInterval(1)), Prayer.isha)
-        XCTAssertNil(p.nextPrayer(at: p.isha.addingTimeInterval(1)))
+        XCTAssertEqual(p.nextPrayer(at: p.isha.addingTimeInterval(1)), Prayer.midnight)
+        XCTAssertNil(p.nextPrayer(at: p.midnight.addingTimeInterval(1)))
     }
 
     func testInvalidDate() {
@@ -522,6 +538,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p1.sunset), "10:01 PM")
         XCTAssertEqual(dateFormatter.string(from: p1.maghrib), "10:01 PM")
         XCTAssertEqual(dateFormatter.string(from: p1.isha), "1:14 AM")
+        XCTAssertEqual(dateFormatter.string(from: p1.midnight), "1:14 AM")
 
         params.highLatitudeRule = .seventhOfTheNight
         let p2 = PrayerTimes(coordinates: coords, date: comps1, calculationParameters: params)!
@@ -534,6 +551,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p2.sunset), "10:01 PM")
         XCTAssertEqual(dateFormatter.string(from: p2.maghrib), "10:01 PM")
         XCTAssertEqual(dateFormatter.string(from: p2.isha), "10:56 PM")
+        XCTAssertEqual(dateFormatter.string(from: p2.midnight), "1:14 AM")
 
         params.highLatitudeRule = .twilightAngle
         let p3 = PrayerTimes(coordinates: coords, date: comps1, calculationParameters: params)!
@@ -546,6 +564,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p3.sunset), "10:01 PM")
         XCTAssertEqual(dateFormatter.string(from: p3.maghrib), "10:01 PM")
         XCTAssertEqual(dateFormatter.string(from: p3.isha), "11:50 PM")
+        XCTAssertEqual(dateFormatter.string(from: p3.midnight), "1:14 AM")
 
         params.highLatitudeRule = nil
         let pAuto = PrayerTimes(coordinates: coords, date: comps1, calculationParameters: params)!
@@ -559,6 +578,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(pAuto.sunset, expectedAuto.sunset)
         XCTAssertEqual(pAuto.maghrib, expectedAuto.maghrib)
         XCTAssertEqual(pAuto.isha, expectedAuto.isha)
+        XCTAssertEqual(pAuto.midnight, expectedAuto.midnight)
     }
 
     func testRecommendedHighLatitudeRule() {
@@ -567,6 +587,31 @@ class AdhanTests: XCTestCase {
 
         let coords2 = Coordinates(latitude: 48.983226, longitude: -3.216649)
         XCTAssertEqual(HighLatitudeRule.recommended(for: coords2), .seventhOfTheNight)
+    }
+
+    func testMidnightRule() {
+        let coords = Coordinates(latitude: 55.983226, longitude: -3.216649)
+        var params = CalculationMethod.muslimWorldLeague.params
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(identifier: "Europe/London")!
+        dateFormatter.dateStyle = .none
+        dateFormatter.timeStyle = .short
+
+        var comps1 = DateComponents()
+        comps1.year = 2020
+        comps1.month = 6
+        comps1.day = 15
+
+        params.midnightRule = .standard
+        let p1 = PrayerTimes(coordinates: coords, date: comps1, calculationParameters: params)!
+
+        XCTAssertEqual(dateFormatter.string(from: p1.midnight), "1:14 AM")
+
+        params.midnightRule = .jafari
+        let p2 = PrayerTimes(coordinates: coords, date: comps1, calculationParameters: params)!
+
+        XCTAssertEqual(dateFormatter.string(from: p2.midnight), "12:46 AM")
     }
     
     func testShafaqGeneral() {
@@ -595,7 +640,8 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunset), "4:54 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "4:57 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "6:27 PM")
-        
+        XCTAssertEqual(dateFormatter.string(from: p.midnight), "12:23 AM")
+
         comps.year = 2021
         comps.month = 4
         comps.day = 1
@@ -609,7 +655,8 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunset), "7:46 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "7:49 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "9:01 PM")
-        
+        XCTAssertEqual(dateFormatter.string(from: p.midnight), "1:23 AM")
+
         comps.year = 2021
         comps.month = 7
         comps.day = 1
@@ -623,7 +670,8 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunset), "9:04 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "9:07 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "10:22 PM")
-        
+        XCTAssertEqual(dateFormatter.string(from: p.midnight), "1:24 AM")
+
         comps.year = 2021
         comps.month = 11
         comps.day = 1
@@ -637,6 +685,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunset), "6:10 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "6:13 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "7:35 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.midnight), "1:03 AM")
     }
     
     func testShafaqAhmer() {
@@ -664,7 +713,8 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunset), "4:54 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "4:57 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "6:07 PM") // value from source is 6:08 PM
-        
+        XCTAssertEqual(dateFormatter.string(from: p.midnight), "12:23 AM")
+
         comps.year = 2021
         comps.month = 4
         comps.day = 1
@@ -678,7 +728,8 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunset), "7:46 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "7:49 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "8:45 PM")
-        
+        XCTAssertEqual(dateFormatter.string(from: p.midnight), "1:23 AM")
+
         comps.year = 2021
         comps.month = 7
         comps.day = 1
@@ -692,7 +743,8 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunset), "9:04 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "9:07 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "10:19 PM")
-        
+        XCTAssertEqual(dateFormatter.string(from: p.midnight), "1:24 AM")
+
         comps.year = 2021
         comps.month = 11
         comps.day = 1
@@ -706,6 +758,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunset), "6:10 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "6:13 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "7:15 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.midnight), "1:03 AM")
     }
     
     func testShafaqAbyad() {
@@ -734,7 +787,8 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunset), "4:54 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "4:57 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "6:28 PM")
-        
+        XCTAssertEqual(dateFormatter.string(from: p.midnight), "12:23 AM")
+
         comps.year = 2021
         comps.month = 4
         comps.day = 1
@@ -748,7 +802,8 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunset), "7:46 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "7:49 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "9:12 PM")
-        
+        XCTAssertEqual(dateFormatter.string(from: p.midnight), "1:23 AM")
+
         comps.year = 2021
         comps.month = 7
         comps.day = 1
@@ -762,7 +817,8 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunset), "9:04 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "9:07 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "11:17 PM")
-        
+        XCTAssertEqual(dateFormatter.string(from: p.midnight), "1:24 AM")
+
         comps.year = 2021
         comps.month = 11
         comps.day = 1
@@ -776,5 +832,6 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunset), "6:10 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "6:13 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "7:37 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.midnight), "1:03 AM")
     }
 }

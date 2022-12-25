@@ -40,6 +40,7 @@ public struct PrayerTimes {
     public let sunset: Date
     public let maghrib: Date
     public let isha: Date
+    public let midnight: Date
 
     public let coordinates: Coordinates
     public let date: DateComponents
@@ -57,6 +58,7 @@ public struct PrayerTimes {
         var tempSunset: Date? = nil
         var tempMaghrib: Date? = nil
         var tempIsha: Date? = nil
+        var tempMidnight: Date? = nil
         let cal: Calendar = .gregorianUTC
 
         guard let prayerDate = cal.date(from: date),
@@ -93,30 +95,7 @@ public struct PrayerTimes {
         // get night length
         let night = tomorrowSunrise.timeIntervalSince(sunsetDate)
 
-        if let fajrComponents = solarTime.timeForSolarAngle(Angle(-calculationParameters.fajrAngle), afterTransit: false) {
-            tempFajr = cal.date(from: fajrComponents)
-        }
-
-        // special case for moonsighting committee above latitude 55
-        if calculationParameters.method == .moonsightingCommittee && coordinates.latitude >= 55 {
-            let nightFraction = night / 7
-            tempFajr = sunriseDate.addingTimeInterval(-nightFraction)
-        }
-
-        let safeFajr: Date = {
-            guard calculationParameters.method != .moonsightingCommittee else {
-                return Astronomical.seasonAdjustedMorningTwilight(latitude: coordinates.latitude, day: dayOfYear, year: year, sunrise: sunriseDate)
-            }
-
-            let portion = calculationParameters.nightPortions(using: coordinates).fajr
-            let nightFraction = portion * night
-
-            return sunriseDate.addingTimeInterval(-nightFraction)
-        }()
-
-        if tempFajr == nil || tempFajr?.compare(safeFajr) == .orderedAscending {
-            tempFajr = safeFajr
-        }
+        tempFajr = PrayerTimes.calculateFajr(for: solarTime, sunriseDate: sunriseDate, dayOfYear: dayOfYear, year: year, night: night, calendar: cal, calculationParameters: calculationParameters, coordinates: coordinates)
 
         // Imsak is always 10 minutes before Fajr
         tempImsak = tempFajr?.addingTimeInterval(-Minute(10).timeInterval)
@@ -160,6 +139,17 @@ public struct PrayerTimes {
                 tempMaghrib = maghribDate
         }
 
+        if calculationParameters.midnightRule == .jafari,
+           let tempSunset,
+           let tomorrowDayOfYear = cal.ordinality(of: .day, in: .year, for: tomorrowDate),
+           let tomorrowYear = cal.dateComponents([.year], from: tomorrowDate).year,
+           let tomorrowFajr = PrayerTimes.calculateFajr(for: tomorrowSolarTime, sunriseDate: tomorrowSunrise, dayOfYear: tomorrowDayOfYear, year: tomorrowYear, night: night, calendar: cal, calculationParameters: calculationParameters, coordinates: coordinates) {
+            let nightIntervalUsingRule = tomorrowFajr.timeIntervalSince(sunsetDate)
+            tempMidnight = tempSunset.addingTimeInterval(nightIntervalUsingRule / 2.0)
+        } else if let tempSunset {
+            tempMidnight = tempSunset.addingTimeInterval(night / 2.0)
+        }
+
         // if we don't have all prayer times then initialization failed
         guard let imsak = tempImsak,
             let fajr = tempFajr,
@@ -168,7 +158,8 @@ public struct PrayerTimes {
             let asr = tempAsr,
             let sunset = tempSunset,
             let maghrib = tempMaghrib,
-            let isha = tempIsha else {
+            let isha = tempIsha,
+            let midnight = tempMidnight else {
                 return nil
         }
 
@@ -197,12 +188,46 @@ public struct PrayerTimes {
         self.isha = isha.addingTimeInterval(calculationParameters.adjustments.isha.timeInterval)
             .addingTimeInterval(calculationParameters.methodAdjustments.isha.timeInterval)
             .roundedMinute(rounding: calculationParameters.rounding)
+        self.midnight = midnight.addingTimeInterval(calculationParameters.adjustments.midnight.timeInterval)
+            .addingTimeInterval(calculationParameters.methodAdjustments.midnight.timeInterval)
+            .roundedMinute(rounding: calculationParameters.rounding)
 
         self.methodHasDistinctSunset = calculationParameters.method == .jafari || calculationParameters.method == .tehran
     }
 
+    private static func calculateFajr(for solarTime: SolarTime, sunriseDate: Date, dayOfYear: Int, year: Int, night: TimeInterval, calendar: Calendar, calculationParameters: CalculationParameters, coordinates: Coordinates) -> Date? {
+        var tempFajr: Date? = nil
+        if let fajrComponents = solarTime.timeForSolarAngle(Angle(-calculationParameters.fajrAngle), afterTransit: false) {
+            tempFajr = calendar.date(from: fajrComponents)
+        }
+
+        // special case for moonsighting committee above latitude 55
+        if calculationParameters.method == .moonsightingCommittee && coordinates.latitude >= 55 {
+            let nightFraction = night / 7
+            tempFajr = sunriseDate.addingTimeInterval(-nightFraction)
+        }
+
+        let safeFajr: Date = {
+            guard calculationParameters.method != .moonsightingCommittee else {
+                return Astronomical.seasonAdjustedMorningTwilight(latitude: coordinates.latitude, day: dayOfYear, year: year, sunrise: sunriseDate)
+            }
+
+            let portion = calculationParameters.nightPortions(using: coordinates).fajr
+            let nightFraction = portion * night
+
+            return sunriseDate.addingTimeInterval(-nightFraction)
+        }()
+
+        if tempFajr == nil || tempFajr?.compare(safeFajr) == .orderedAscending {
+            tempFajr = safeFajr
+        }
+        return tempFajr
+    }
+
     public func currentPrayer(at time: Date = Date()) -> Prayer? {
-        if isha.timeIntervalSince(time) <= 0 {
+        if midnight.timeIntervalSince(time) <= 0 {
+            return .midnight
+        } else if isha.timeIntervalSince(time) <= 0 {
             return .isha
         } else if maghrib.timeIntervalSince(time) <= 0 {
             return .maghrib
@@ -224,8 +249,10 @@ public struct PrayerTimes {
     }
 
     public func nextPrayer(at time: Date = Date()) -> Prayer? {
-        if isha.timeIntervalSince(time) <= 0 {
+        if midnight.timeIntervalSince(time) <= 0 {
             return nil
+        } else if isha.timeIntervalSince(time) <= 0 {
+            return .midnight
         } else if maghrib.timeIntervalSince(time) <= 0 {
             return .isha
         } else if methodHasDistinctSunset && sunset.timeIntervalSince(time) <= 0 {
@@ -263,6 +290,8 @@ public struct PrayerTimes {
             return maghrib
         case .isha:
             return isha
+        case .midnight:
+            return midnight
         }
     }
 }
