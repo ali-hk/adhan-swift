@@ -117,6 +117,13 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p12.ishaAngle, 14)
         XCTAssertEqual(p12.ishaInterval, 0)
         XCTAssertEqual(p12.method, CalculationMethod.tehran)
+
+        let p13 = CalculationMethod.jafari.params
+        XCTAssertEqual(p13.fajrAngle, 16)
+        XCTAssertEqual(p13.maghribAngle, 4)
+        XCTAssertEqual(p13.ishaAngle, 14)
+        XCTAssertEqual(p13.ishaInterval, 0)
+        XCTAssertEqual(p13.method, CalculationMethod.jafari)
     }
     
     func testPrayerTimes() {

@@ -80,6 +80,11 @@ import Foundation
   Institute of Geophysics, University of Tehran. Early Isha time with an angle of 14°. Slightly later Fajr time with an angle of 17.7°.
   Calculates Maghrib based on the sun reaching an angle of 4.5° below the horizon.
 
+  **jafari**
+
+  Shia Ithna-Ashari, Leva Institute, Qum. Early Isha time with an angle of 14°. Slightly later Fajr time with an angle of 16°.
+  Calculates Maghrib based on the sun reaching an angle of 4° below the horizon.
+
   **turkey**
 
   An approximation of the Diyanet method used in Turkey. This approximation is less accurate outside the region of Turkey.
@@ -123,6 +128,9 @@ public enum CalculationMethod: String, Codable, CaseIterable {
 
     // Institute of Geophysics, University of Tehran
     case tehran
+
+    // Shia Ithna-Ashari, Leva Institute, Qum
+    case jafari
 
     // Dianet
     case turkey
@@ -169,6 +177,8 @@ public enum CalculationMethod: String, Codable, CaseIterable {
             return params
         case .tehran:
             return CalculationParameters(fajrAngle: 17.7, maghribAngle: 4.5, ishaAngle: 14, method: self)
+        case .jafari:
+            return CalculationParameters(fajrAngle: 16, maghribAngle: 4, ishaAngle: 14, method: self)
         case .turkey:
             var params = CalculationParameters(fajrAngle: 18, ishaAngle: 17, method: self)
             params.methodAdjustments = PrayerAdjustments(fajr: 0, sunrise: -7, dhuhr: 5, asr: 4, maghrib: 7, isha: 0)

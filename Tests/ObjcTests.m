@@ -218,6 +218,8 @@
         params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodQatar];
     } else if ([method isEqualToString:@"Tehran"]) {
         params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodTehran];
+    } else if ([method isEqualToString:@"Jafari"]) {
+        params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodJafari];
     } else if ([method isEqualToString:@"Singapore"]) {
         params = [[BACalculationParameters alloc] initWithMethod:BACalculationMethodSingapore];
     } else if ([method isEqualToString:@"Turkey"]) {
