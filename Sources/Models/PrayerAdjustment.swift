@@ -27,6 +27,7 @@ import Foundation
 
 /* Adjustment value for prayer times, in minutes */
 public struct PrayerAdjustments: Codable, Equatable {
+    public var imsak: Minute
     public var fajr: Minute
     public var sunrise: Minute
     public var dhuhr: Minute
@@ -34,7 +35,8 @@ public struct PrayerAdjustments: Codable, Equatable {
     public var maghrib: Minute
     public var isha: Minute
 
-    public init(fajr: Minute = 0, sunrise: Minute = 0, dhuhr: Minute = 0, asr: Minute = 0, maghrib: Minute = 0, isha: Minute = 0) {
+    public init(imsak: Minute = 0, fajr: Minute = 0, sunrise: Minute = 0, dhuhr: Minute = 0, asr: Minute = 0, maghrib: Minute = 0, isha: Minute = 0) {
+        self.imsak = imsak
         self.fajr = fajr
         self.sunrise = sunrise
         self.dhuhr = dhuhr

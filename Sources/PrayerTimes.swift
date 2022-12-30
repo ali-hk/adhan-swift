@@ -32,6 +32,7 @@ import Foundation
   has the correct timezone set.
  */
 public struct PrayerTimes {
+    public let imsak: Date
     public let fajr: Date
     public let sunrise: Date
     public let dhuhr: Date
@@ -45,6 +46,7 @@ public struct PrayerTimes {
 
     public init?(coordinates: Coordinates, date: DateComponents, calculationParameters: CalculationParameters) {
 
+        var tempImsak: Date? = nil
         var tempFajr: Date? = nil
         var tempSunrise: Date? = nil
         var tempDhuhr: Date? = nil
@@ -111,6 +113,9 @@ public struct PrayerTimes {
             tempFajr = safeFajr
         }
 
+        // Imsak is always 10 minutes before Fajr
+        tempImsak = tempFajr?.addingTimeInterval(-Minute(10).timeInterval)
+
         // Isha calculation with check against safe value
         if calculationParameters.ishaInterval > 0 {
             tempIsha = tempMaghrib?.addingTimeInterval(calculationParameters.ishaInterval.timeInterval)
@@ -151,7 +156,8 @@ public struct PrayerTimes {
         }
 
         // if we don't have all prayer times then initialization failed
-        guard let fajr = tempFajr,
+        guard let imsak = tempImsak,
+            let fajr = tempFajr,
             let sunrise = tempSunrise,
             let dhuhr = tempDhuhr,
             let asr = tempAsr,
@@ -161,6 +167,9 @@ public struct PrayerTimes {
         }
 
         // Assign final times to public struct members with all offsets
+        self.imsak = imsak.addingTimeInterval(calculationParameters.adjustments.imsak.timeInterval)
+            .addingTimeInterval(calculationParameters.methodAdjustments.imsak.timeInterval)
+            .roundedMinute(rounding: calculationParameters.rounding)
         self.fajr = fajr.addingTimeInterval(calculationParameters.adjustments.fajr.timeInterval)
             .addingTimeInterval(calculationParameters.methodAdjustments.fajr.timeInterval)
             .roundedMinute(rounding: calculationParameters.rounding)
@@ -194,6 +203,8 @@ public struct PrayerTimes {
             return .sunrise
         } else if fajr.timeIntervalSince(time) <= 0 {
             return .fajr
+        } else if imsak.timeIntervalSince(time) <= 0 {
+            return .imsak
         }
 
         return nil
@@ -212,13 +223,17 @@ public struct PrayerTimes {
             return .dhuhr
         } else if fajr.timeIntervalSince(time) <= 0 {
             return .sunrise
+        } else if imsak.timeIntervalSince(time) <= 0 {
+            return .fajr
         }
 
-        return .fajr
+        return .imsak
     }
 
     public func time(for prayer: Prayer) -> Date {
         switch prayer {
+        case .imsak:
+            return imsak
         case .fajr:
             return fajr
         case .sunrise:

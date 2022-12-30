@@ -26,6 +26,7 @@
 import Foundation
 
 @objc public enum BAPrayer: Int {
+    case imsak = -1
     case fajr = 0
     case sunrise = 1
     case dhuhr = 2
@@ -36,6 +37,7 @@ import Foundation
 }
 
 @objcMembers open class BAPrayerTimes: NSObject {
+    open var imsak: Date?
     open var fajr: Date?
     open var sunrise: Date?
     open var dhuhr: Date?
@@ -48,6 +50,7 @@ import Foundation
     public init(coordinates: BACoordinates, date: DateComponents, calculationParameters: BACalculationParameters) {
         prayerTimes = PrayerTimes(coordinates: Coordinates(latitude: coordinates.latitude, longitude: coordinates.longitude), date: date, calculationParameters: calculationParameters.calculationParameters())
         if let prayerTimes = prayerTimes {
+            self.imsak = prayerTimes.imsak as Date
             self.fajr = prayerTimes.fajr as Date
             self.sunrise = prayerTimes.sunrise as Date
             self.dhuhr = prayerTimes.dhuhr as Date
@@ -87,6 +90,8 @@ import Foundation
         switch baPrayer {
         case BAPrayer.none:
             return nil
+        case BAPrayer.imsak:
+            return Prayer.imsak
         case BAPrayer.fajr:
             return Prayer.fajr
         case BAPrayer.sunrise:
@@ -107,6 +112,8 @@ import Foundation
             return BAPrayer.none
         }
         switch prayer {
+        case Prayer.imsak:
+            return BAPrayer.imsak
         case Prayer.fajr:
             return BAPrayer.fajr
         case Prayer.sunrise:
@@ -280,6 +287,7 @@ import Foundation
 }
 
 @objcMembers open class BAPrayerAdjustments: NSObject {
+    open var imsak: Int = 0
     open var fajr: Int = 0
     open var sunrise: Int = 0
     open var dhuhr: Int = 0
@@ -287,7 +295,8 @@ import Foundation
     open var maghrib: Int = 0
     open var isha: Int = 0
     
-    public init(fajr: Int = 0, sunrise: Int = 0, dhuhr: Int = 0, asr: Int = 0, maghrib: Int = 0, isha: Int = 0) {
+    public init(imsak: Int = 0, fajr: Int = 0, sunrise: Int = 0, dhuhr: Int = 0, asr: Int = 0, maghrib: Int = 0, isha: Int = 0) {
+        self.imsak = imsak
         self.fajr = fajr
         self.sunrise = sunrise
         self.dhuhr = dhuhr
@@ -298,7 +307,7 @@ import Foundation
     }
     
     internal func prayerAdjustments() -> PrayerAdjustments {
-        return PrayerAdjustments(fajr: self.fajr, sunrise: self.sunrise, dhuhr: self.dhuhr, asr: self.asr, maghrib: self.maghrib, isha: self.isha)
+        return PrayerAdjustments(imsak: self.imsak, fajr: self.fajr, sunrise: self.sunrise, dhuhr: self.dhuhr, asr: self.asr, maghrib: self.maghrib, isha: self.isha)
     }
 }
 
