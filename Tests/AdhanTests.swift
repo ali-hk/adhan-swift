@@ -145,6 +145,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "6:08 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:21 PM")
         XCTAssertEqual(dateFormatter.string(from: p.asr), "6:22 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunset), "8:32 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "8:32 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "9:57 PM")
     }
@@ -169,6 +170,7 @@ class AdhanTests: XCTestCase {
             XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:06 AM")
             XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "12:05 PM")
             XCTAssertEqual(dateFormatter.string(from: p.asr), "2:42 PM")
+            XCTAssertEqual(dateFormatter.string(from: p.sunset), "5:01 PM")
             XCTAssertEqual(dateFormatter.string(from: p.maghrib), "5:01 PM")
             XCTAssertEqual(dateFormatter.string(from: p.isha), "6:26 PM")
         } else {
@@ -180,6 +182,7 @@ class AdhanTests: XCTestCase {
         params.adjustments.sunrise = 10
         params.adjustments.dhuhr = 10
         params.adjustments.asr = 10
+        params.adjustments.sunset = 5
         params.adjustments.maghrib = 10
         params.adjustments.isha = 10
         if let p2 = PrayerTimes(coordinates: Coordinates(latitude: 35.7750, longitude: -78.6336), date: comps, calculationParameters: params) {
@@ -188,6 +191,7 @@ class AdhanTests: XCTestCase {
             XCTAssertEqual(dateFormatter.string(from: p2.sunrise), "7:16 AM")
             XCTAssertEqual(dateFormatter.string(from: p2.dhuhr), "12:15 PM")
             XCTAssertEqual(dateFormatter.string(from: p2.asr), "2:52 PM")
+            XCTAssertEqual(dateFormatter.string(from: p2.sunset), "5:06 PM")
             XCTAssertEqual(dateFormatter.string(from: p2.maghrib), "5:11 PM")
             XCTAssertEqual(dateFormatter.string(from: p2.isha), "6:36 PM")
         } else {
@@ -201,6 +205,7 @@ class AdhanTests: XCTestCase {
             XCTAssertEqual(dateFormatter.string(from: p3.sunrise), "7:06 AM")
             XCTAssertEqual(dateFormatter.string(from: p3.dhuhr), "12:05 PM")
             XCTAssertEqual(dateFormatter.string(from: p3.asr), "2:42 PM")
+            XCTAssertEqual(dateFormatter.string(from: p3.sunset), "5:01 PM")
             XCTAssertEqual(dateFormatter.string(from: p3.maghrib), "5:01 PM")
             XCTAssertEqual(dateFormatter.string(from: p3.isha), "6:26 PM")
         } else {
@@ -226,6 +231,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:16 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "12:33 PM")
         XCTAssertEqual(dateFormatter.string(from: p.asr), "3:20 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunset), "5:40 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "5:43 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "7:05 PM")
     }
@@ -250,6 +256,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "9:19 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "12:25 PM")
         XCTAssertEqual(dateFormatter.string(from: p.asr), "1:36 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunset), "3:22 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "3:25 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "5:02 PM")
     }
@@ -272,6 +279,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:07 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "12:00 PM")
         XCTAssertEqual(dateFormatter.string(from: p.asr), "2:34 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunset), "4:52 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "5:13 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "6:03 PM")
         
@@ -286,6 +294,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p2.sunrise), "5:48 AM")
         XCTAssertEqual(dateFormatter.string(from: p2.dhuhr), "1:05 PM")
         XCTAssertEqual(dateFormatter.string(from: p2.asr), "4:54 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunset), "4:52 PM")
         XCTAssertEqual(dateFormatter.string(from: p2.maghrib), "8:43 PM")
         XCTAssertEqual(dateFormatter.string(from: p2.isha), "9:43 PM")
     }
@@ -313,6 +322,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p1.sunrise), "6:16 AM")
         XCTAssertEqual(dateFormatter.string(from: p1.dhuhr), "1:09 PM")
         XCTAssertEqual(dateFormatter.string(from: p1.asr), "4:53 PM") // original time 4:52 PM
+        XCTAssertEqual(dateFormatter.string(from: p1.sunset), "7:45 PM")
         XCTAssertEqual(dateFormatter.string(from: p1.maghrib), "7:52 PM")
         XCTAssertEqual(dateFormatter.string(from: p1.isha), "9:19 PM") // original time 9:18 PM
     }
@@ -339,6 +349,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p1.sunrise), "6:51 AM")
         XCTAssertEqual(dateFormatter.string(from: p1.dhuhr), "11:59 AM")
         XCTAssertEqual(dateFormatter.string(from: p1.asr), "2:47 PM")
+        XCTAssertEqual(dateFormatter.string(from: p1.sunset), "5:06 PM")
         XCTAssertEqual(dateFormatter.string(from: p1.maghrib), "5:06 PM")
         XCTAssertEqual(dateFormatter.string(from: p1.isha), "6:29 PM")
     }
@@ -357,11 +368,12 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p.sunrise, p.time(for: .sunrise))
         XCTAssertEqual(p.dhuhr, p.time(for: .dhuhr))
         XCTAssertEqual(p.asr, p.time(for: .asr))
+        XCTAssertEqual(p.sunset, p.time(for: .sunset))
         XCTAssertEqual(p.maghrib, p.time(for: .maghrib))
         XCTAssertEqual(p.isha, p.time(for: .isha))
     }
     
-    func testCurrentPrayer() {
+    func testCurrentPrayer_sunsetSameAsMaghrib_currentReturnsMaghrib() {
         var comps = DateComponents()
         comps.year = 2015
         comps.month = 9
@@ -377,11 +389,33 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p.currentPrayer(at: p.sunrise.addingTimeInterval(1)), Prayer.sunrise)
         XCTAssertEqual(p.currentPrayer(at: p.dhuhr.addingTimeInterval(1)), Prayer.dhuhr)
         XCTAssertEqual(p.currentPrayer(at: p.asr.addingTimeInterval(1)), Prayer.asr)
+        XCTAssertEqual(p.currentPrayer(at: p.sunset.addingTimeInterval(1)), Prayer.maghrib)
+        XCTAssertEqual(p.currentPrayer(at: p.maghrib.addingTimeInterval(1)), Prayer.maghrib)
+        XCTAssertEqual(p.currentPrayer(at: p.isha.addingTimeInterval(1)), Prayer.isha)
+    }
+
+    func testCurrentPrayer_sunsetBeforeMaghrib_currentReturnsSunset() {
+        var comps = DateComponents()
+        comps.year = 2015
+        comps.month = 9
+        comps.day = 1
+        var params = CalculationMethod.jafari.params
+        params.madhab = .shafi
+        params.highLatitudeRule = .twilightAngle
+        let p = PrayerTimes(coordinates: Coordinates(latitude: 33.720817, longitude: 73.090032), date: comps, calculationParameters: params)!
+        XCTAssertNil(p.currentPrayer(at: p.imsak.addingTimeInterval(-1)))
+        XCTAssertEqual(p.currentPrayer(at: p.fajr.addingTimeInterval(-1)), Prayer.imsak)
+        XCTAssertEqual(p.currentPrayer(at: p.fajr), Prayer.fajr)
+        XCTAssertEqual(p.currentPrayer(at: p.fajr.addingTimeInterval(1)), Prayer.fajr)
+        XCTAssertEqual(p.currentPrayer(at: p.sunrise.addingTimeInterval(1)), Prayer.sunrise)
+        XCTAssertEqual(p.currentPrayer(at: p.dhuhr.addingTimeInterval(1)), Prayer.dhuhr)
+        XCTAssertEqual(p.currentPrayer(at: p.asr.addingTimeInterval(1)), Prayer.asr)
+        XCTAssertEqual(p.currentPrayer(at: p.sunset.addingTimeInterval(1)), Prayer.sunset)
         XCTAssertEqual(p.currentPrayer(at: p.maghrib.addingTimeInterval(1)), Prayer.maghrib)
         XCTAssertEqual(p.currentPrayer(at: p.isha.addingTimeInterval(1)), Prayer.isha)
     }
     
-    func testNextPrayer() {
+    func testNextPrayer_sunsetSameAsMaghrib_nextReturnsIsha() {
         var comps = DateComponents()
         comps.year = 2015
         comps.month = 9
@@ -398,6 +432,29 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(p.nextPrayer(at: p.sunrise.addingTimeInterval(1)), Prayer.dhuhr)
         XCTAssertEqual(p.nextPrayer(at: p.dhuhr.addingTimeInterval(1)), Prayer.asr)
         XCTAssertEqual(p.nextPrayer(at: p.asr.addingTimeInterval(1)), Prayer.maghrib)
+        XCTAssertEqual(p.nextPrayer(at: p.sunset.addingTimeInterval(1)), Prayer.isha)
+        XCTAssertEqual(p.nextPrayer(at: p.maghrib.addingTimeInterval(1)), Prayer.isha)
+        XCTAssertNil(p.nextPrayer(at: p.isha.addingTimeInterval(1)))
+    }
+
+    func testNextPrayer_sunsetBeforeMaghrib_nextReturnsMaghrib() {
+        var comps = DateComponents()
+        comps.year = 2015
+        comps.month = 9
+        comps.day = 1
+        var params = CalculationMethod.jafari.params
+        params.madhab = .shafi
+        params.highLatitudeRule = .twilightAngle
+        let p = PrayerTimes(coordinates: Coordinates(latitude: 33.720817, longitude: 73.090032), date: comps, calculationParameters: params)!
+        XCTAssertEqual(p.nextPrayer(at: p.imsak.addingTimeInterval(-1)), Prayer.imsak)
+        XCTAssertEqual(p.nextPrayer(at: p.imsak.addingTimeInterval(1)), Prayer.fajr)
+        XCTAssertEqual(p.nextPrayer(at: p.fajr.addingTimeInterval(-1)), Prayer.fajr)
+        XCTAssertEqual(p.nextPrayer(at: p.fajr), Prayer.sunrise)
+        XCTAssertEqual(p.nextPrayer(at: p.fajr.addingTimeInterval(1)), Prayer.sunrise)
+        XCTAssertEqual(p.nextPrayer(at: p.sunrise.addingTimeInterval(1)), Prayer.dhuhr)
+        XCTAssertEqual(p.nextPrayer(at: p.dhuhr.addingTimeInterval(1)), Prayer.asr)
+        XCTAssertEqual(p.nextPrayer(at: p.asr.addingTimeInterval(1)), Prayer.sunset)
+        XCTAssertEqual(p.nextPrayer(at: p.sunset.addingTimeInterval(1)), Prayer.maghrib)
         XCTAssertEqual(p.nextPrayer(at: p.maghrib.addingTimeInterval(1)), Prayer.isha)
         XCTAssertNil(p.nextPrayer(at: p.isha.addingTimeInterval(1)))
     }
@@ -462,6 +519,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p1.sunrise), "4:26 AM")
         XCTAssertEqual(dateFormatter.string(from: p1.dhuhr), "1:14 PM")
         XCTAssertEqual(dateFormatter.string(from: p1.asr), "5:46 PM")
+        XCTAssertEqual(dateFormatter.string(from: p1.sunset), "10:01 PM")
         XCTAssertEqual(dateFormatter.string(from: p1.maghrib), "10:01 PM")
         XCTAssertEqual(dateFormatter.string(from: p1.isha), "1:14 AM")
 
@@ -473,6 +531,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p2.sunrise), "4:26 AM")
         XCTAssertEqual(dateFormatter.string(from: p2.dhuhr), "1:14 PM")
         XCTAssertEqual(dateFormatter.string(from: p2.asr), "5:46 PM")
+        XCTAssertEqual(dateFormatter.string(from: p2.sunset), "10:01 PM")
         XCTAssertEqual(dateFormatter.string(from: p2.maghrib), "10:01 PM")
         XCTAssertEqual(dateFormatter.string(from: p2.isha), "10:56 PM")
 
@@ -484,6 +543,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p3.sunrise), "4:26 AM")
         XCTAssertEqual(dateFormatter.string(from: p3.dhuhr), "1:14 PM")
         XCTAssertEqual(dateFormatter.string(from: p3.asr), "5:46 PM")
+        XCTAssertEqual(dateFormatter.string(from: p3.sunset), "10:01 PM")
         XCTAssertEqual(dateFormatter.string(from: p3.maghrib), "10:01 PM")
         XCTAssertEqual(dateFormatter.string(from: p3.isha), "11:50 PM")
 
@@ -496,6 +556,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(pAuto.sunrise, expectedAuto.sunrise)
         XCTAssertEqual(pAuto.dhuhr, expectedAuto.dhuhr)
         XCTAssertEqual(pAuto.asr, expectedAuto.asr)
+        XCTAssertEqual(pAuto.sunset, expectedAuto.sunset)
         XCTAssertEqual(pAuto.maghrib, expectedAuto.maghrib)
         XCTAssertEqual(pAuto.isha, expectedAuto.isha)
     }
@@ -531,6 +592,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:52 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "12:28 PM")
         XCTAssertEqual(dateFormatter.string(from: p.asr), "3:12 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunset), "4:54 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "4:57 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "6:27 PM")
         
@@ -544,6 +606,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:01 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:28 PM")
         XCTAssertEqual(dateFormatter.string(from: p.asr), "5:53 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunset), "7:46 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "7:49 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "9:01 PM")
         
@@ -557,6 +620,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "5:42 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:28 PM")
         XCTAssertEqual(dateFormatter.string(from: p.asr), "6:42 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunset), "9:04 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "9:07 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "10:22 PM")
         
@@ -570,6 +634,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:55 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:08 PM")
         XCTAssertEqual(dateFormatter.string(from: p.asr), "4:26 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunset), "6:10 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "6:13 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "7:35 PM")
     }
@@ -596,6 +661,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:52 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "12:28 PM")
         XCTAssertEqual(dateFormatter.string(from: p.asr), "2:37 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunset), "4:54 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "4:57 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "6:07 PM") // value from source is 6:08 PM
         
@@ -609,6 +675,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:01 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:28 PM")
         XCTAssertEqual(dateFormatter.string(from: p.asr), "4:59 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunset), "7:46 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "7:49 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "8:45 PM")
         
@@ -622,6 +689,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "5:42 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:28 PM")
         XCTAssertEqual(dateFormatter.string(from: p.asr), "5:29 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunset), "9:04 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "9:07 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "10:19 PM")
         
@@ -635,6 +703,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:55 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:08 PM")
         XCTAssertEqual(dateFormatter.string(from: p.asr), "3:45 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunset), "6:10 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "6:13 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "7:15 PM")
     }
@@ -662,6 +731,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:52 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "12:28 PM")
         XCTAssertEqual(dateFormatter.string(from: p.asr), "3:12 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunset), "4:54 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "4:57 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "6:28 PM")
         
@@ -675,6 +745,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:01 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:28 PM")
         XCTAssertEqual(dateFormatter.string(from: p.asr), "5:53 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunset), "7:46 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "7:49 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "9:12 PM")
         
@@ -688,6 +759,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "5:42 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:28 PM")
         XCTAssertEqual(dateFormatter.string(from: p.asr), "6:42 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunset), "9:04 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "9:07 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "11:17 PM")
         
@@ -701,6 +773,7 @@ class AdhanTests: XCTestCase {
         XCTAssertEqual(dateFormatter.string(from: p.sunrise), "7:55 AM")
         XCTAssertEqual(dateFormatter.string(from: p.dhuhr), "1:08 PM")
         XCTAssertEqual(dateFormatter.string(from: p.asr), "4:26 PM")
+        XCTAssertEqual(dateFormatter.string(from: p.sunset), "6:10 PM")
         XCTAssertEqual(dateFormatter.string(from: p.maghrib), "6:13 PM")
         XCTAssertEqual(dateFormatter.string(from: p.isha), "7:37 PM")
     }

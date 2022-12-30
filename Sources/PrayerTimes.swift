@@ -37,12 +37,15 @@ public struct PrayerTimes {
     public let sunrise: Date
     public let dhuhr: Date
     public let asr: Date
+    public let sunset: Date
     public let maghrib: Date
     public let isha: Date
 
     public let coordinates: Coordinates
     public let date: DateComponents
     public let calculationParameters: CalculationParameters
+
+    public let methodHasDistinctSunset: Bool
 
     public init?(coordinates: Coordinates, date: DateComponents, calculationParameters: CalculationParameters) {
 
@@ -51,6 +54,7 @@ public struct PrayerTimes {
         var tempSunrise: Date? = nil
         var tempDhuhr: Date? = nil
         var tempAsr: Date? = nil
+        var tempSunset: Date? = nil
         var tempMaghrib: Date? = nil
         var tempIsha: Date? = nil
         let cal: Calendar = .gregorianUTC
@@ -78,6 +82,7 @@ public struct PrayerTimes {
         }
 
         tempSunrise = cal.date(from: solarTime.sunrise)
+        tempSunset = cal.date(from: solarTime.sunset)
         tempMaghrib = cal.date(from: solarTime.sunset)
         tempDhuhr = cal.date(from: solarTime.transit)
 
@@ -161,6 +166,7 @@ public struct PrayerTimes {
             let sunrise = tempSunrise,
             let dhuhr = tempDhuhr,
             let asr = tempAsr,
+            let sunset = tempSunset,
             let maghrib = tempMaghrib,
             let isha = tempIsha else {
                 return nil
@@ -182,12 +188,17 @@ public struct PrayerTimes {
         self.asr = asr.addingTimeInterval(calculationParameters.adjustments.asr.timeInterval)
             .addingTimeInterval(calculationParameters.methodAdjustments.asr.timeInterval)
             .roundedMinute(rounding: calculationParameters.rounding)
+        self.sunset = sunset.addingTimeInterval(calculationParameters.adjustments.sunset.timeInterval)
+            .addingTimeInterval(calculationParameters.methodAdjustments.sunset.timeInterval)
+            .roundedMinute(rounding: calculationParameters.rounding)
         self.maghrib = maghrib.addingTimeInterval(calculationParameters.adjustments.maghrib.timeInterval)
             .addingTimeInterval(calculationParameters.methodAdjustments.maghrib.timeInterval)
             .roundedMinute(rounding: calculationParameters.rounding)
         self.isha = isha.addingTimeInterval(calculationParameters.adjustments.isha.timeInterval)
             .addingTimeInterval(calculationParameters.methodAdjustments.isha.timeInterval)
             .roundedMinute(rounding: calculationParameters.rounding)
+
+        self.methodHasDistinctSunset = calculationParameters.method == .jafari || calculationParameters.method == .tehran
     }
 
     public func currentPrayer(at time: Date = Date()) -> Prayer? {
@@ -195,6 +206,8 @@ public struct PrayerTimes {
             return .isha
         } else if maghrib.timeIntervalSince(time) <= 0 {
             return .maghrib
+        } else if methodHasDistinctSunset && sunset.timeIntervalSince(time) <= 0 {
+            return .sunset
         } else if asr.timeIntervalSince(time) <= 0 {
             return .asr
         } else if dhuhr.timeIntervalSince(time) <= 0 {
@@ -215,8 +228,10 @@ public struct PrayerTimes {
             return nil
         } else if maghrib.timeIntervalSince(time) <= 0 {
             return .isha
-        } else if asr.timeIntervalSince(time) <= 0 {
+        } else if methodHasDistinctSunset && sunset.timeIntervalSince(time) <= 0 {
             return .maghrib
+        } else if asr.timeIntervalSince(time) <= 0 {
+            return methodHasDistinctSunset ? .sunset : .maghrib
         } else if dhuhr.timeIntervalSince(time) <= 0 {
             return .asr
         } else if sunrise.timeIntervalSince(time) <= 0 {
@@ -242,6 +257,8 @@ public struct PrayerTimes {
             return dhuhr
         case .asr:
             return asr
+        case .sunset:
+            return sunset
         case .maghrib:
             return maghrib
         case .isha:

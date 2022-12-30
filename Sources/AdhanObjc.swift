@@ -31,6 +31,7 @@ import Foundation
     case sunrise = 1
     case dhuhr = 2
     case asr = 3
+    case sunset = 7
     case maghrib = 4
     case isha = 5
     case none = 6
@@ -42,6 +43,7 @@ import Foundation
     open var sunrise: Date?
     open var dhuhr: Date?
     open var asr: Date?
+    open var sunset: Date?
     open var maghrib: Date?
     open var isha: Date?
     
@@ -55,6 +57,7 @@ import Foundation
             self.sunrise = prayerTimes.sunrise as Date
             self.dhuhr = prayerTimes.dhuhr as Date
             self.asr = prayerTimes.asr as Date
+            self.sunset = prayerTimes.sunset as Date
             self.maghrib = prayerTimes.maghrib as Date
             self.isha = prayerTimes.isha as Date
         }
@@ -100,6 +103,8 @@ import Foundation
             return Prayer.dhuhr
         case BAPrayer.asr:
             return Prayer.asr
+        case BAPrayer.sunset:
+            return Prayer.sunset
         case BAPrayer.maghrib:
             return Prayer.maghrib
         case BAPrayer.isha:
@@ -122,6 +127,8 @@ import Foundation
             return BAPrayer.dhuhr
         case Prayer.asr:
             return BAPrayer.asr
+        case Prayer.sunset:
+            return BAPrayer.sunset
         case Prayer.maghrib:
             return BAPrayer.maghrib
         case Prayer.isha:
@@ -292,22 +299,24 @@ import Foundation
     open var sunrise: Int = 0
     open var dhuhr: Int = 0
     open var asr: Int = 0
+    open var sunset: Int = 0
     open var maghrib: Int = 0
     open var isha: Int = 0
     
-    public init(imsak: Int = 0, fajr: Int = 0, sunrise: Int = 0, dhuhr: Int = 0, asr: Int = 0, maghrib: Int = 0, isha: Int = 0) {
+    public init(imsak: Int = 0, fajr: Int = 0, sunrise: Int = 0, dhuhr: Int = 0, asr: Int = 0, sunset: Int = 0, maghrib: Int = 0, isha: Int = 0) {
         self.imsak = imsak
         self.fajr = fajr
         self.sunrise = sunrise
         self.dhuhr = dhuhr
         self.asr = asr
+        self.sunset = sunset
         self.maghrib = maghrib
         self.isha = isha
         super.init()
     }
     
     internal func prayerAdjustments() -> PrayerAdjustments {
-        return PrayerAdjustments(imsak: self.imsak, fajr: self.fajr, sunrise: self.sunrise, dhuhr: self.dhuhr, asr: self.asr, maghrib: self.maghrib, isha: self.isha)
+        return PrayerAdjustments(imsak: self.imsak, fajr: self.fajr, sunrise: self.sunrise, dhuhr: self.dhuhr, asr: self.asr, sunset: self.sunset, maghrib: self.maghrib, isha: self.isha)
     }
 }
 
